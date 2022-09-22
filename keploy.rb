@@ -22,6 +22,7 @@ class Keploy < Formula
        system "gatsby", "build"
     end  
     system "cp", "-R" , "ui/public", "web"
+    system "rm", "-rf", "ui"
     Dir.chdir("cmd/server") do
        system "go", "build", "-o" , "keploy"   
        bin.install "keploy"
