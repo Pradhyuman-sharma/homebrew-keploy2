@@ -24,7 +24,10 @@ class Keploy < Formula
       bin.install "keploy"
     end      
   end
-  test do 
+  test do
     assert_match "👍 connect to http://localhost:8081/ for GraphQL playground", shell_output("#{bin}/keploy")
+    pid = Process.spawn('sleep 20')
+    sleep(1)
+    Process.kill('HUP',pid)
   end
 end
