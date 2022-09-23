@@ -8,21 +8,24 @@ class Keploy < Formula
   license "Apache-2.0"
 
   depends_on "gatsby-cli" => :build
-  depends_on "node@14" => :build
   depends_on "go" => :build
+  depends_on "node@14" => :build
 
   def install
     system "git", "clone", "https://github.com/keploy/ui.git"
+    
     Dir.chdir("ui") do
       system "npm", "install", *Language::Node.local_npm_install_args
       system "gatsby", "build"
     end  
-    FileUtils.cp_r "ui/public", "web"
-    FileUtils.rm_rf "ui"
+    
+    cp_r "ui/public", "web"
+    rm_rf "ui"
     Dir.chdir("cmd/server") do
       system "go", "build", "-o", "keploy"   
       bin.install "keploy"
     end      
+  
   end
   test do 
     assert_match "👍 connect to http://localhost:8081/ for GraphQL playground", shell_output("#{bin}/keploy")
